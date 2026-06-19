@@ -1,0 +1,359 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    
+    <!-- SEO Meta Tags -->
+    <title>CineTrend | The Movie Pulse Dashboard</title>
+    <meta name="description" content="Discover, search, and track the trending movies with CineTrend. Real-time movie popularity leaderboard and search analytics." />
+    
+    <!-- Google Fonts: Outfit (Display) & Inter (Body) -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Outfit:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    
+    <!-- FontAwesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+    
+    <!-- Custom Style Sheet -->
+    <link rel="stylesheet" href="/src/style.css" />
+  </head>
+  <body>
+    <!-- Mobile Device Simulation Frame -->
+    <div class="app-container" id="main-app-shell">
+      
+      <!-- App Header -->
+      <header class="app-header">
+        <div class="app-logo">
+          <i class="fa-solid fa-film logo-icon"></i>
+          <h1>Cine<span>Trend</span></h1>
+        </div>
+        
+        <div class="header-actions">
+          <div class="total-searches-badge" id="header-search-badge" title="Total App Searches">
+            <i class="fa-solid fa-fire text-amber"></i>
+            <span id="global-search-count">0</span>
+          </div>
+        </div>
+      </header>
+
+      <!-- Main Scrollable App Content -->
+      <main class="app-content" id="app-main-content">
+        
+        <!-- TAB 1: Discover Screen -->
+        <section class="tab-content-pane active" id="tab-discover">
+          
+          <!-- MOST SEARCHED HERO BANNER -->
+          <div class="hero-banner-container" id="most-searched-banner-wrapper">
+            <!-- Background Image & Gradient overlay will be handled dynamically or in CSS -->
+            <div class="hero-banner-backdrop" id="hero-backdrop"></div>
+            <div class="hero-banner-overlay"></div>
+            
+            <div class="hero-badge">
+              <i class="fa-solid fa-ranking-star"></i>
+              <span>Most Searched Movie</span>
+            </div>
+            
+            <div class="hero-content">
+              <h2 id="hero-title">Loading...</h2>
+              <div class="hero-meta">
+                <span id="hero-year">2024</span>
+                <span class="meta-dot">•</span>
+                <span id="hero-runtime">120m</span>
+                <span class="meta-dot">•</span>
+                <span class="hero-rating"><i class="fa-solid fa-star"></i> <span id="hero-rating-val">8.5</span></span>
+              </div>
+              <p id="hero-description" class="hero-synopsis">
+                Enter search terms below to start tracking movie trends. The absolute most searched movie will automatically claim this spot!
+              </p>
+              
+              <div class="hero-actions-row">
+                <button class="hero-btn primary-btn" id="hero-info-btn">
+                  <i class="fa-solid fa-circle-info"></i> View Details
+                </button>
+                <div class="hero-metric">
+                  <i class="fa-solid fa-magnifying-glass"></i>
+                  <span id="hero-search-count">0 searches</span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Interactive Search Section -->
+          <div class="search-section">
+            <div class="search-bar-wrapper">
+              <i class="fa-solid fa-magnifying-glass search-icon"></i>
+              <input type="text" id="movie-search-input" placeholder="Search movies by title, director, or genre..." autocomplete="off" />
+              <button class="clear-search-btn" id="clear-search-btn" style="display: none;" aria-label="Clear Search">
+                <i class="fa-solid fa-xmark"></i>
+              </button>
+            </div>
+            
+            <!-- Autocomplete suggestions dropdown -->
+            <div class="search-suggestions-overlay" id="search-suggestions" style="display: none;">
+              <!-- Dynamic suggestions items will be inserted here -->
+            </div>
+          </div>
+
+          <!-- Genre Filter Chips -->
+          <div class="genre-chips-scroll">
+            <div class="genre-chips-container" id="genre-chips-container">
+              <button class="genre-chip active" data-genre="all">All</button>
+              <button class="genre-chip" data-genre="Sci-Fi">Sci-Fi</button>
+              <button class="genre-chip" data-genre="Action">Action</button>
+              <button class="genre-chip" data-genre="Drama">Drama</button>
+              <button class="genre-chip" data-genre="Thriller">Thriller</button>
+              <button class="genre-chip" data-genre="Adventure">Adventure</button>
+            </div>
+          </div>
+
+          <!-- Movie Grid / Results -->
+          <div class="movie-section-header">
+            <h3 id="section-title-label">All Movies</h3>
+            <span class="section-count" id="section-movie-count">8 movies</span>
+          </div>
+
+          <div class="movie-grid" id="movie-grid-container">
+            <!-- Dynamic movie cards will be inserted by main.js -->
+          </div>
+        </section>
+
+        <!-- TAB 2: Leaderboard Screen -->
+        <section class="tab-content-pane" id="tab-leaderboard">
+          <div class="screen-title-section">
+            <h2>Search Leaderboard</h2>
+            <p>Real-time movie search statistics and rankings</p>
+          </div>
+
+          <div class="leaderboard-container">
+            <div class="leaderboard-header-row">
+              <span>Rank & Movie</span>
+              <span>Searches</span>
+            </div>
+            <div class="leaderboard-list" id="leaderboard-list">
+              <!-- Dynamic leaderboard list items will be inserted by main.js -->
+            </div>
+          </div>
+        </section>
+
+        <!-- TAB 3: Add Movie Screen -->
+        <section class="tab-content-pane" id="tab-add-movie">
+          <div class="screen-title-section">
+            <h2>Add Custom Movie</h2>
+            <p>Expand the catalog and start searching for your favorites</p>
+          </div>
+
+          <div class="form-container">
+            <form id="add-movie-form">
+              <div class="form-group">
+                <label for="new-movie-title">Movie Title</label>
+                <input type="text" id="new-movie-title" class="form-input-text" placeholder="e.g. The Matrix" required />
+              </div>
+              
+              <div class="form-group" style="display: grid; grid-template-columns: 1.2fr 0.8fr; gap: 12px;">
+                <div>
+                  <label for="new-movie-director">Director</label>
+                  <input type="text" id="new-movie-director" class="form-input-text" placeholder="e.g. Lana & Lilly Wachowski" required />
+                </div>
+                <div>
+                  <label for="new-movie-rating">IMDb Rating</label>
+                  <input type="number" id="new-movie-rating" class="form-input-text" placeholder="8.7" step="0.1" min="1.0" max="10.0" required />
+                </div>
+              </div>
+
+              <div class="form-group" style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px;">
+                <div>
+                  <label for="new-movie-year">Release Year</label>
+                  <input type="number" id="new-movie-year" class="form-input-text" placeholder="1999" min="1880" max="2030" required />
+                </div>
+                <div>
+                  <label for="new-movie-runtime">Runtime (mins)</label>
+                  <input type="number" id="new-movie-runtime" class="form-input-text" placeholder="136" min="1" max="500" required />
+                </div>
+              </div>
+
+              <div class="form-group">
+                <label for="new-movie-genre">Genre</label>
+                <select id="new-movie-genre" class="form-select" required>
+                  <option value="" disabled selected>Select Primary Genre</option>
+                  <option value="Sci-Fi">Sci-Fi</option>
+                  <option value="Action">Action</option>
+                  <option value="Drama">Drama</option>
+                  <option value="Thriller">Thriller</option>
+                  <option value="Adventure">Adventure</option>
+                  <option value="Crime">Crime</option>
+                  <option value="Animation">Animation</option>
+                  <option value="Comedy">Comedy</option>
+                  <option value="Romance">Romance</option>
+                </select>
+              </div>
+
+              <div class="form-group">
+                <label for="new-movie-synopsis">Synopsis / Description</label>
+                <textarea id="new-movie-synopsis" class="form-textarea" rows="3" placeholder="Write a brief overview of the movie plot..." required></textarea>
+              </div>
+
+              <div class="form-group">
+                <label>Theme Color (Visual Poster Background)</label>
+                <div class="color-preset-picker">
+                  <label class="color-preset-option">
+                    <input type="radio" name="new-movie-color" value="linear-gradient(135deg, #3b0764, #1e1b4b)" checked />
+                    <span class="color-preview" style="background: linear-gradient(135deg, #3b0764, #1e1b4b);"></span>
+                  </label>
+                  <label class="color-preset-option">
+                    <input type="radio" name="new-movie-color" value="linear-gradient(135deg, #450a0a, #1c1917)" />
+                    <span class="color-preview" style="background: linear-gradient(135deg, #450a0a, #1c1917);"></span>
+                  </label>
+                  <label class="color-preset-option">
+                    <input type="radio" name="new-movie-color" value="linear-gradient(135deg, #064e3b, #022c22)" />
+                    <span class="color-preview" style="background: linear-gradient(135deg, #064e3b, #022c22);"></span>
+                  </label>
+                  <label class="color-preset-option">
+                    <input type="radio" name="new-movie-color" value="linear-gradient(135deg, #0c4a6e, #082f49)" />
+                    <span class="color-preview" style="background: linear-gradient(135deg, #0c4a6e, #082f49);"></span>
+                  </label>
+                  <label class="color-preset-option">
+                    <input type="radio" name="new-movie-color" value="linear-gradient(135deg, #1c1917, #0c0a09)" />
+                    <span class="color-preview" style="background: linear-gradient(135deg, #1c1917, #0c0a09);"></span>
+                  </label>
+                </div>
+              </div>
+
+              <div class="form-submit-row">
+                <button type="submit" class="full-btn" id="submit-movie-btn">
+                  <i class="fa-solid fa-plus"></i> Add Movie to Database
+                </button>
+              </div>
+            </form>
+          </div>
+        </section>
+
+        <!-- TAB 4: Analytics Screen -->
+        <section class="tab-content-pane" id="tab-analytics">
+          <div class="screen-title-section">
+            <h2>Search Analytics</h2>
+            <p>Usage stats and genre distribution trends</p>
+          </div>
+
+          <!-- Analytics Summary Cards -->
+          <div class="stats-grid">
+            <div class="stat-card">
+              <div class="stat-num" id="stat-total-searches">0</div>
+              <div class="stat-label">Total Searches</div>
+            </div>
+            <div class="stat-card">
+              <div class="stat-num text-purple" id="stat-unique-movies">0</div>
+              <div class="stat-label">Movies Cataloged</div>
+            </div>
+            <div class="stat-card">
+              <div class="stat-num text-pink" id="stat-top-genre">N/A</div>
+              <div class="stat-label">Top Genre</div>
+            </div>
+          </div>
+
+          <!-- Genre Search Distribution Chart -->
+          <div class="analytics-card">
+            <h3>Searches by Genre</h3>
+            <div class="genre-chart-container" id="genre-chart">
+              <!-- Dynamic genre progress bars will be inserted by main.js -->
+            </div>
+          </div>
+
+          <!-- Recent Search Log -->
+          <div class="analytics-card">
+            <h3>Recent Activity Log</h3>
+            <div class="recent-search-list" id="recent-search-log">
+              <!-- Dynamic activity items will be inserted by main.js -->
+            </div>
+          </div>
+        </section>
+
+      </main>
+
+      <!-- Bottom Tab Navigation Bar -->
+      <nav class="app-nav" id="bottom-navigation-bar">
+        <button class="nav-tab-btn active" data-target="tab-discover" id="nav-btn-discover">
+          <i class="fa-solid fa-compass"></i>
+          <span>Discover</span>
+        </button>
+        <button class="nav-tab-btn" data-target="tab-leaderboard" id="nav-btn-leaderboard">
+          <i class="fa-solid fa-ranking-star"></i>
+          <span>Leaderboard</span>
+        </button>
+        <button class="nav-tab-btn" data-target="tab-add-movie" id="nav-btn-add">
+          <i class="fa-solid fa-circle-plus"></i>
+          <span>Add Movie</span>
+        </button>
+        <button class="nav-tab-btn" data-target="tab-analytics" id="nav-btn-analytics">
+          <i class="fa-solid fa-chart-simple"></i>
+          <span>Analytics</span>
+        </button>
+      </nav>
+
+      <!-- BOTTOM SHEET: Movie Detail Display -->
+      <div class="modal-overlay" id="movie-detail-modal-overlay">
+        <div class="bottom-sheet-content">
+          <div class="bottom-sheet-drag-handle"></div>
+          
+          <div class="bottom-sheet-header">
+            <button class="modal-close-btn" id="close-detail-modal" aria-label="Close details">
+              <i class="fa-solid fa-xmark"></i>
+            </button>
+          </div>
+          
+          <div class="movie-detail-body">
+            <!-- Backdrop Poster Header inside Sheet -->
+            <div class="detail-backdrop-poster" id="modal-movie-backdrop">
+              <div class="backdrop-gradient"></div>
+              <div class="detail-rating-pill">
+                <i class="fa-solid fa-star"></i>
+                <span id="modal-movie-rating">8.5</span>
+              </div>
+            </div>
+
+            <div class="detail-info-block">
+              <h2 id="modal-movie-title">Movie Title</h2>
+              
+              <div class="detail-meta-row">
+                <span id="modal-movie-year">2024</span>
+                <span class="meta-dot">•</span>
+                <span id="modal-movie-runtime">148m</span>
+                <span class="meta-dot">•</span>
+                <span class="detail-genre-badge" id="modal-movie-genre">Sci-Fi</span>
+              </div>
+
+              <div class="detail-stats-row">
+                <div class="detail-stat-item">
+                  <span class="label">Director</span>
+                  <span class="value" id="modal-movie-director">Christopher Nolan</span>
+                </div>
+                <div class="detail-stat-item">
+                  <span class="label">Engagements</span>
+                  <span class="value" id="modal-movie-searches">24 searches</span>
+                </div>
+              </div>
+
+              <div class="detail-synopsis-section">
+                <h3>Synopsis</h3>
+                <p id="modal-movie-synopsis">Movie plot description text goes here.</p>
+              </div>
+
+              <div class="detail-actions-row">
+                <button class="full-btn" id="modal-quick-search-btn">
+                  <i class="fa-solid fa-magnifying-glass"></i> Search Again (Increment Count)
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- Main JS Application script -->
+    <script type="module" src="/src/main.js"></script>
+  </body>
+</html>
+

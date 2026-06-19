@@ -1,0 +1,11 @@
+node_modules/
+dist/
+.git/
+package-lock.json
+.next/
+build/
+out/
+coverage/
+.turbo/
+*.log
+**/__snapshots__/
